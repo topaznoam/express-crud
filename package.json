@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node --env-file=.env --watch crud.js"
+    "start": "node --env-file=.env --watch index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
