@@ -63,16 +63,17 @@ const updateIncome = async (req, res) => {
     if (!userExits.incomes.includes(incomeId)) {
       return res.status(404).json({ message: "Income not found" });
     }
-    const updateIncome = await Income.findByIdAndUpdate(incomeId, {
+    const updatedIncome = await Income.findByIdAndUpdate(incomeId, {
       title,
       description,
       amount,
       tag,
       currency,
     });
-    if (!updateIncome) {
+    if (!updatedIncome) {
       return res.status(404).json({ message: "Income not found" });
     }
+    await updatedIncome.save();
     return res.status(200).json({ message: "Income added successfully" });
   } catch (error) {
     console.log(error);
@@ -94,6 +95,10 @@ const deleteIncome = async (req, res) => {
       return res.status(404).json({ message: "Income not found" });
     }
     await Income.deleteOne({ _id: incomeId });
+    userExits.incomes = userExits.incomes.filter(
+      (incomes) => incomes.toString() !== incomeId
+    );
+    await userExits.save();
     return res.status(200).json({ message: "Income deleted successfully" });
   } catch (error) {
     console.log(error);
